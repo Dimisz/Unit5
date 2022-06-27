@@ -5,11 +5,14 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     private Rigidbody objectRb;
+    private GameManager gameManager;
 
     private float minSpeed = 12.0f;
     private float maxSpeed = 16.0f;
     private float torqueRange = 10.0f;
 
+    public int scoreValue; // unique point value for each prefab
+    public ParticleSystem explosionEffect;
 
     // playground border on the x axis
     private float xRange = 4.0f;
@@ -21,6 +24,7 @@ public class Target : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         CreateInstance();
     }
 
@@ -55,6 +59,8 @@ public class Target : MonoBehaviour
     private void OnMouseDown()
     {
         Destroy(gameObject);
+        Instantiate(explosionEffect, transform.position, explosionEffect.transform.rotation);
+        gameManager.UpdateScore(scoreValue);
     }
 
     private void OnTriggerEnter(Collider other)
