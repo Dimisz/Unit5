@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
     public Button restartButton;
-    
+    public GameObject titleScreen;
 
     private int score;
 
@@ -28,13 +28,13 @@ public class GameManager : MonoBehaviour
         
     }
 
-    IEnumerator SpawnTarget()
+    IEnumerator SpawnTarget(int difficulty)
     {
         //Debug.Log("INSIDE COROOUTINE");
         while (isGameActive)
         {
             //Debug.Log("INSIDE WHILLE");
-            float randomSpawnDelay = Random.Range(1.0f, 3.0f);
+            float randomSpawnDelay = Random.Range(0.0f, 3.0f / difficulty);
             //Debug.Log("randomSpawnDelay declared: " + randomSpawnDelay);
             yield return new WaitForSeconds(randomSpawnDelay);
             //Debug.Log("Waited for seconds");
@@ -64,18 +64,19 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void StartGame()
+    public void StartGame(int difficulty)
     {
         //Debug.Log("Inside StartGame function");
         isGameActive = true;
         //Debug.Log("isGameActive set to: " + isGameActive);
         score = 0;
         //Debug.Log("score set to: " + score);
-        StartCoroutine(SpawnTarget());
+        StartCoroutine(SpawnTarget(difficulty));
         //Debug.Log("StartCoroutine called");
         
         UpdateScore(0);
         //Debug.Log("Update Score called");
         //Debug.Log("isGameActive set to: " + isGameActive);
+        titleScreen.gameObject.SetActive(false);
     }
 }
